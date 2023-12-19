@@ -12,11 +12,13 @@ const DashBoard = (props) => {
         dispatch(setBreadcrumb(PagePath));
     }, []);
 
-    const [selectedImages, setSelectedImages] = useState([]);
+    const [selectedImages, setSelectedImages] = useState(null);
 
     const handleImageChange = async (event) => {
-        const images = await convertFileToBase64(event.target.files);
-        setSelectedImages(images);
+        if (event.target.files.length > 0) {
+            const images = await convertFileToBase64(event.target.files);
+            setSelectedImages(images);
+        }
     };
 
     const handleUpload = async () => {
@@ -26,7 +28,7 @@ const DashBoard = (props) => {
     return (
         <div>
             <input type="file" onChange={handleImageChange} multiple />
-            {selectedImages && <img src={selectedImages[0].base64} alt="Preview" style={{ maxWidth: '100%' }} />}
+            {!!selectedImages && <img src={selectedImages[0].base64} alt="Preview" style={{ maxWidth: '100%' }} />}
             <button onClick={handleUpload}>Upload Ảnh</button>
         </div>
     );
