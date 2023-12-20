@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import '../../../../Asset/css/ChatForm.css';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [socket, setSocket] = useState(null);
-    const { roomID } = useParams();
+    const { UserID } = useParams();
     const user = JSON.parse(localStorage.getItem('logininfo')).username;
     useEffect(() => {
+        const roomID = renderRoomID(UserID);
         const newSocket = io('http://localhost:8080', { query: { roomID } });
         setSocket(newSocket);
 
@@ -20,12 +20,22 @@ const Chat = (props) => {
                 return item[1];
             });
             setMessages((prevMessages) => prevMessages.concat(a));
-        }); 
+        });
 
         return () => {
             newSocket.disconnect();
         };
     }, []);
+
+    const renderRoomID = (userID) => {
+        // Sắp xếp userID theo thứ tự tăng dần
+        const sortedUserIDs = [userID, user].sort();
+
+        // Nối userID với dấu gạch ngang
+        const roomID = sortedUserIDs.join('-');
+
+        return roomID;
+    }
 
     const handleSendMessage = () => {
         if (newMessage.trim() === '') return;

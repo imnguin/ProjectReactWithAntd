@@ -17,6 +17,7 @@ const Header = (props) => {
     const navigate = useNavigate();
     const screens = useBreakpoint()
     const isMobile = screens.xs;
+    const user = JSON.parse(localStorage.getItem('logininfo'))
 
     const items = [
         {
@@ -62,7 +63,7 @@ const Header = (props) => {
                             float : 'right',
                             marginRight : 10
                         }}>
-                            <Avatar size='default' icon={<UserOutlined />}></Avatar>  {!isMobile ? 'Nguin - Lâm Xuân Nguyên' : ''}
+                            <Avatar size='default' icon={<UserOutlined />}></Avatar>  {!isMobile ? `${user.username} - ${user.fullname}` : ''}
                         </div>
                     </Dropdown>
                 </Col>
