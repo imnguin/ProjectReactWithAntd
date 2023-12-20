@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import '../../../../Asset/css/ChatForm.css';
-import { Col, Row } from 'antd';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Chat = (props) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [socket, setSocket] = useState(null);
-
-    const roomID = "Nguin_Aaaa";
-    
+    const { roomID } = useParams();
+    const user = JSON.parse(localStorage.getItem('logininfo')).username;
     useEffect(() => {
-        const newSocket = io('http://localhost:8081', { query: { roomID } });
+        const newSocket = io('http://localhost:8080', { query: { roomID } });
         setSocket(newSocket);
 
         newSocket.on('message', (data) => {
-            setMessages((prevMessages) => [...prevMessages, data]);
-        });
+            const values = Object.entries(data)
+            const a = values.map(item => {
+                return item[1];
+            });
+            setMessages((prevMessages) => prevMessages.concat(a));
+        }); 
 
         return () => {
             newSocket.disconnect();
@@ -25,7 +29,7 @@ const Chat = (props) => {
 
     const handleSendMessage = () => {
         if (newMessage.trim() === '') return;
-        socket.emit('message', { text: newMessage, sender: 'user' });
+        socket.emit('message', { text: newMessage, sender: user });
         setNewMessage('');
     };
 
@@ -33,7 +37,7 @@ const Chat = (props) => {
         <div className="chat-container">
             <div className="message-list">
                 {messages.map((message, index) => (
-                    <div key={index} className={message.sender === 'user' ? 'user-message' : 'other-message'}>
+                    <div key={index} className={message.sender === user ? 'user-message' : 'other-message'}>
                         {message.text}
                     </div>
                 ))}

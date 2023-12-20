@@ -2,7 +2,7 @@ import Chat from "./Chat";
 
 const ChatBox = [
     {
-        path : '/ChatBox',
+        path : '/ChatBox/:roomID',
         component : Chat
     },
 ]
