@@ -1,113 +1,120 @@
-import React, { useEffect, useState } from 'react';
-import {
-    Button,
-    Empty,
-    Row,
-    Space,
-    Table,
-    Modal,
-    Col,
-    Divider
-} from 'antd';
-import nodata from '../../Asset/Images/empty.svg'
-import { Link } from 'react-router-dom';
+import { Button, Col, Divider, Empty, Modal, Row, Space, Table } from "antd";
+import React, { useEffect, useState } from "react";
 import { CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-    DEFAULT_TABLE_BORDERED,
-    DEFAULT_TABLE_PAGE_NODATA,
-    DEFAULT_TABLE_PAGE_SIZE_NUMBER,
-    DEFAULT_TABLE_PAGE_SIZE_OPTIONS,
-    DEFAULT_TABLE_SELECTION_TYPE,
-    DEFAULT_TABLE_SIZE
-} from '../Constants/TableConfig'
-import { useNavigate } from "react-router-dom";
-import FormContainer from '../FormContainer';
+import { Link, useNavigate } from "react-router-dom";
+import FormContainer from "../FormContainer";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const DataGird = (props) => {
     let {
         title,
-        listColumn,
+        pKey,
         dataSource,
-        selectionType,
+        listColumn,
+        defaultCurrentPage,
+        defaultPageSize,
         size,
         bordered,
-        pageSizeNumber,
-        isShowHeaderTable,
-        onSelectRowItem,
-        onPageChange,
-        onDeleteItem,
+        showHeader,
+        showSizeChanger,
         pageSizeOptions,
-        isShowSizeChanger,
+        scroll,
+        urlAdd,
         isShowHeaderAction,
         isShowButtonAdd,
+        onSelectRowItem,
         isShowModalBtnAdd,
-        urlAdd,
-        modalWidth,
         TitleModal,
+        modalWidth,
         listColumnModel,
-        onSubmitModel
+        onSubmitModel,
+        onDeleteItem,
     } = props;
-    const navigate = useNavigate();
-    const [modal, contextHolder] = Modal.useModal();
-    const [loading, setLoading] = useState(true);
-    const [listCells, setListCells] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [loadings, setLoadings] = useState([]);
-    const [disBtnDel, setDisBtnDel] = useState(true);
-    const [selectRowItem, setSelectRowItem] = useState([]);
-    const [selectRowKeys, setSelectRowKeys] = useState([]);
 
+    const [modal, contextHolder] = Modal.useModal();
+    const navigate = useNavigate();
     let objjd = null;
     const onCloseModal = () => {
         objjd.destroy();
     }
 
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log("rowSelection", selectedRowKeys, selectedRows)
-            setDisBtnDel(selectedRowKeys.length > 0 && selectedRows.length> 0 ? false : true)
-            setSelectRowItem(selectedRows)
-            setSelectRowKeys(selectedRowKeys)
-        },
-        // getCheckboxProps: (record) => ({
-        //     disabled: record.name === 'Disabled User',
-        //     // Column configuration not to be checked
-        //     name: record.name,
-        // })
+    const [columns, Setcolumns] = useState([]);
+    const [dataTable, SetDataTable] = useState([]);
+    const [currentPage, SetCurrentPage] = useState(!!defaultCurrentPage ? defaultCurrentPage : 1);
+    const [pageSize, SetpageSize] = useState(!!defaultPageSize ? defaultPageSize : 1);
+    const [loadings, setLoadings] = useState([]);
+    const [disBtnDel, setDisBtnDel] = useState(true);
+
+    const locale = {
+        emptyText: (
+            <Empty
+                imageStyle={{
+                    height: 40,
+                }}
+                description={
+                    <span>Dữ liệu không tồn tại</span>
+                }
+            >
+            </Empty>
+        )
     };
 
     useEffect(() => {
-        const lstCell = getListCells();
-        setListCells(lstCell)
-    }, [listColumn])
+        const data = prepareData(dataSource);
+        SetDataTable(data);
+    }, [dataSource]);
 
+    const prepareData = (data) => {
+        const tempData = data?.map((item, index) => {
+            return {
+                ...item,
+                key: `${item[pKey]} -  ${index}`
+            }
+        });
+        return !!tempData ? tempData : []
+    }
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) => {
+            setDisBtnDel(!!selectedRowKeys && selectedRowKeys.length > 0 ? false : true);
+            setSelectedRowKeys(selectedRowKeys);
+            setSelectedRows(selectedRows);
+        },
+    };
+
+    useEffect(() => {
+        const lst = getListCells();
+        Setcolumns(lst);
+    }, [listColumn]);
 
     const getListCells = () => {
         let colums = [];
-
         listColumn?.map((item, index) => {
             if (item.dataIndex == 'edit') {
                 item.render = (_, record) => (
                     <Space size="middle">
-                        <Link to={`${item.link + record.id}`} key={item.key}>{!!item.icon ? item.icon : 'Edit'}</Link>
+                        <Link to={`${item.link + record[item.keyID]}`} key={item.key}>{!!item.icon ? item.icon : 'Edit'}</Link>
                     </Space>
                 )
             }
             if (item.dataIndex == 'delete') {
                 item.render = (_, record) => (
                     <Space size="middle">
-                        <Button type='primary' ghost={true} style={{ border: 0, color: '#ff1616' }} onClick={() => handleDelete(record)} size={"small"} >
+                        <Button type='primary' ghost={true} style={{ border: 0, color: '#ff1616' }} onClick={() => handleClickIcon(record, 2)} size={"small"} >
                             {!!item.icon ? item.icon : 'Delete'}
                         </Button>
                     </Space>
                 )
             }
             if (item.dataIndex == 'groupAction') {
-
                 item.render = (_, record) => (
                     <Space size="middle">
                         <Link to={`${item.link + record.id}`}><EditOutlined /></Link>
-                        <Button type='primary' ghost={true} style={{ border: 0, color: '#ff1616' }} onClick={() => handleDelete(record)} icon={<DeleteOutlined />} size={"small"} />
+                        <Button type='primary' ghost={true} style={{ border: 0, color: '#ff1616' }} onClick={() => handleClickIcon(record, 2)} icon={<DeleteOutlined />} size={"small"} />
                     </Space>
                 )
             }
@@ -117,29 +124,24 @@ const DataGird = (props) => {
         return colums
     }
 
-    const handleDelete = (record) => {
-        onDeleteItem?.(record)
-    }
+    const handleClickIcon = (record, type) => {
+        if (type == 1) {
 
-    const handleTableChange = (pagination, filters, sorter) => {
-        setCurrentPage(pagination.current);
-        onPageChange?.(pagination.current);
-    }
-
-    const locale = {
-        emptyText: (
-            <Empty
-                image={nodata}
-                imageStyle={{
-                    height: 60,
-                }}
-                description={
-                    <span>{DEFAULT_TABLE_PAGE_NODATA}</span>
-                }
-            >
-            </Empty>
-        )
+        } else {
+            onDeleteItem?.(record);
+        }
     };
+
+    const handlePageChange = (current, size) => {
+        console.log('handlePageChange', current, size);
+        SetCurrentPage(current);
+        SetpageSize(size);
+    }
+
+    const handlePageSizeChange = (page, pageSize) => {
+        console.log('handlePageChange', page, pageSize);
+        SetpageSize(pageSize);
+    }
 
     const showLoadings = (index) => {
         setLoadings((prevLoadings) => {
@@ -156,13 +158,14 @@ const DataGird = (props) => {
         }, 600);
     }
 
-    const SubmitModel = (values) => {
-        onSubmitModel?.(values)
-    }
-
     const handleAdd = (index) => {
         showLoadings(index)
         checkNavige()
+    }
+
+    const handleSelectRowsDelete = (index) => {
+        showLoadings(index)
+        onSelectRowItem?.(selectedRows)
     }
 
     const checkNavige = () => {
@@ -199,71 +202,75 @@ const DataGird = (props) => {
         }
     }
 
-    const handleSelectRowsDelete = (index) => {
-        showLoadings(index)
-        onSelectRowItem?.(selectRowKeys, selectRowItem)
+    const SubmitModel = (values) => {
+        onSubmitModel?.(values)
     }
 
+    const confirm = (index) => {
+        Modal.confirm({
+            title: 'Confirm',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Bla bla ...',
+            okText: '确认',
+            cancelText: '取消',
+            onOk : handleSelectRowsDelete(index)
+        });
+    };
 
     return (
-        <> {!!title? <Divider>{title}</Divider> : ""}
-        {
-            !!isShowHeaderAction && <Row type='flex' justify={'end'} align='middle' style={{ marginBottom: 5, }}>
-                {!!isShowButtonAdd && <Button
-                    onClick={() => handleAdd(2)}
-                    size='middle'
-                    htmlType='button'
-                    loading={loadings[2]}
-                >
-                    <PlusOutlined />Thêm
-                </Button>}
+        <>{!!title ? <Divider>{title}</Divider> : ""}
+            {
+                !!isShowHeaderAction && <Row type='flex' justify={'end'} align='middle' style={{ marginBottom: 5, }}>
+                    {!!isShowButtonAdd && <Button
+                        onClick={() => handleAdd(2)}
+                        size='middle'
+                        htmlType='button'
+                        loading={loadings[2]}
+                    >
+                        <PlusOutlined />Thêm
+                    </Button>}
 
-                {!!onSelectRowItem && <Button
-                    onClick={() => handleSelectRowsDelete(1)}
-                    size='middle'
-                    danger
-                    type='dashed'
-                    htmlType='button'
-                    disabled={disBtnDel}
-                    loading={loadings[1]}
-                    style={{marginLeft : 5}}
-                >
-                    <DeleteOutlined />Xóa
-                </Button>}
-            </Row>
-        }
-        <Col>
-            <Table
-                rowSelection={{
-                    type: !!selectionType ? selectionType : DEFAULT_TABLE_SELECTION_TYPE,
-                    ...rowSelection,
-                }}
-                locale={locale}
-                showHeader={isShowHeaderTable}
-                columns={listCells}
-                dataSource={dataSource}
-                size={!!size ? size : DEFAULT_TABLE_SIZE}
-                bordered={!!bordered ? bordered : DEFAULT_TABLE_BORDERED}
-                pagination={{
-                    pageSize: !!pageSizeNumber ? pageSizeNumber : DEFAULT_TABLE_PAGE_SIZE_NUMBER,
-                    position: ['bottomRight'],
-                    showSizeChanger: isShowSizeChanger,
-                    defaultCurrent: currentPage,
-                    total: (!!dataSource && dataSource.length > 0) ? dataSource[0].totalRows : dataSource.length,
-                    pageSizeOptions: !!isShowSizeChanger ? (!!pageSizeOptions && pageSizeOptions.length > 0) ? pageSizeOptions : DEFAULT_TABLE_PAGE_SIZE_OPTIONS : [],
-                }}
-                onChange={handleTableChange}
-                scroll={{
-                    // y: 500,
-                    x: 1300
-                }}
-            />
-        </Col>
-        {contextHolder}
+                    {!!onSelectRowItem && <Button
+                        onClick={() => confirm(1)}
+                        size='middle'
+                        danger
+                        type='dashed'
+                        htmlType='button'
+                        disabled={disBtnDel}
+                        loading={loadings[1]}
+                        style={{ marginLeft: 5 }}
+                    >
+                        <DeleteOutlined />Xóa
+                    </Button>}
+                </Row>
+            }
+            <Col>
+                <Table
+                    rowSelection={rowSelection}
+                    locale={locale}
+                    dataSource={dataTable}
+                    columns={columns}
+                    size={!!size ? size : 'small'}
+                    bordered={!!bordered ? bordered : 'enable'}
+                    showHeader={!!showHeader ? showHeader : true}
+                    pagination={{
+                        current: currentPage,
+                        pageSize: pageSize,
+                        total: dataTable.length,
+                        showSizeChanger: !!showSizeChanger ? showSizeChanger : true,
+                        pageSizeOptions: !!pageSizeOptions && pageSizeOptions.length > 0 ? pageSizeOptions : ['10', '20', '50', '100'],
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        onChange: (page, pageSize) => handlePageChange(page, pageSize),
+                        onShowSizeChange: (current, size) => handlePageSizeChange(current, size),
+                    }}
+                    scroll={!!scroll ? scroll : {
+                        x: 1000
+                    }}
+                />;
+            </Col>
+            {contextHolder}
         </>
-
     );
-
 }
 
 export default DataGird;

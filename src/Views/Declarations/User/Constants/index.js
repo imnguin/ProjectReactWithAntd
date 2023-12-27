@@ -4,6 +4,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 export const PagePath = [{ href: "/", title: "Trang chủ" }, { title: "Danh sách nhân viên", }];
 export const AddPagePath = [{ href: "/", title: "Trang chủ" }, {href: "/User", title: "Danh sách nhân viên", }, { title: "Thêm mới", }];
+export const EditPagePath = [{ href: "/", title: "Trang chủ" }, {href: "/User", title: "Danh sách nhân viên", }, { title: "Chỉnh sửa", }];
 
 export const columns = [
     {
@@ -34,8 +35,9 @@ export const columns = [
         dataIndex: 'edit',
         align: 'center',
         width: 100,
-        link: '/edit/',
-        icon: <EditOutlined />
+        link: '/User/Edit/',
+        icon: <EditOutlined />,
+        keyID: 'username',
     },
     {
         title: 'Xóa',
@@ -43,7 +45,7 @@ export const columns = [
         dataIndex: 'delete',
         align: 'center',
         width: 100,
-        icon: <DeleteOutlined />
+        icon: <DeleteOutlined />,
     },
 ];
 

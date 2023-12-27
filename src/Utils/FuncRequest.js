@@ -20,7 +20,7 @@ export const _fetchAPI = async (url = '', data = {}, _header = headerDefautl, me
         if (method == 'POST') {
             requestData = {
                 ...requestData,
-                body: JSON.stringify(data)
+                body: typeof data === 'object' ? JSON.stringify(data) : JSON.stringify({data})
             }
         }
 
