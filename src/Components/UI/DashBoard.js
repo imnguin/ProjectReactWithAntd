@@ -5,12 +5,13 @@ import { setBreadcrumb } from '../Redux/Reducers';
 import { convertFileToBase64 } from "../../Utils/convertFileToBase64";
 import { Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ExcelExport from "../ExcelExport";
 const DashBoard = (props) => {
     const PagePath = [{ href: "/", title: 'Trang chủ' }];
     const [modal, contextHolder] = Modal.useModal();
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setBreadcrumb(PagePath)); 
+        dispatch(setBreadcrumb(PagePath));
     }, []);
 
     const [selectedImages, setSelectedImages] = useState(null);
@@ -21,7 +22,7 @@ const DashBoard = (props) => {
             setSelectedImages(images);
         }
     };
-    
+
 
     const handleUpload = async () => {
         console.log(selectedImages);
@@ -37,6 +38,14 @@ const DashBoard = (props) => {
         });
     };
 
+    const sheet1 = {
+        data: [['Name', 'Age', 'City'], ['John Doe', 25, 'New York'], ['Jane Doe', 30, 'San Francisco']],
+    };
+
+    const sheet2 = {
+        data: [['Country', 'Population'], ['USA', 331000000], ['India', 1380004385]],
+    };
+
     return (
         <div>
             <input type="file" onChange={handleImageChange} multiple />
@@ -44,6 +53,7 @@ const DashBoard = (props) => {
             <button onClick={handleUpload}>Upload Ảnh</button>
 
             <Button onClick={confirm}>Confirm</Button>
+            <ExcelExport sheets={[sheet1, sheet2]} />
             {contextHolder}
         </div>
     );
