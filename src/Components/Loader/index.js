@@ -5,6 +5,19 @@ import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 
+import Lottie from 'react-lottie';
+import animationData from '../../Asset/Images/Loading/loading.json'
+
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
+    rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+    },
+
+};
+
 const Loader = () => {
     const loaddingReducer = useSelector(selectLoadding) > 0;
     const [css, Setcss] = useState({
@@ -37,7 +50,23 @@ const Loader = () => {
     return (
         <div style={css}>
             <div style={{ margin: 'auto' }}>
-                <Spin/>
+                {/* <Spin/>
+                 */}
+                <Lottie
+                    style={{
+                        clear: 'both',
+                        position: 'absolute',
+                        top: '40%',
+                        left: 0,
+                        right: 0,
+                        transform: 'translateY(-40%)'
+                    }}
+                    options={defaultOptions}
+                    width={200}
+                    height={200}
+                    isPaused={false}
+                    isStopped={false}
+                />
             </div>
         </div>
     );

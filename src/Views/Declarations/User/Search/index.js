@@ -9,7 +9,7 @@ import { Notification } from '../../../../Utils/Notification';
 import SearchForm from '../../../../Components/SearchForm';
 
 const Search = (props) => {
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [isLoadComplete, setisLoadComplete] = useState(false);
   useEffect(() => {
@@ -54,6 +54,7 @@ const Search = (props) => {
       {
         isLoadComplete &&
           <DataGird
+            // isDisableRowSelect={true}
             pKey='username'
             title='Danh sách nhân viên'
             listColumn={columns} 
@@ -69,6 +70,7 @@ const Search = (props) => {
             isShowHeaderAction={true}
             isShowButtonAdd={true}
             urlAdd='/User/Add'
+            // isShowModalBtnAdd={true}
             onSelectRowItem={handleSelectRow}
             onDeleteItem={(item) => console.log(item)}
         />

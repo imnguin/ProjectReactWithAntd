@@ -9,6 +9,7 @@ const DataGird = (props) => {
     let {
         title,
         pKey,
+        isDisableRowSelect,
         dataSource,
         listColumn,
         defaultCurrentPage,
@@ -133,13 +134,11 @@ const DataGird = (props) => {
     };
 
     const handlePageChange = (current, size) => {
-        console.log('handlePageChange', current, size);
         SetCurrentPage(current);
         SetpageSize(size);
     }
 
     const handlePageSizeChange = (page, pageSize) => {
-        console.log('handlePageChange', page, pageSize);
         SetpageSize(pageSize);
     }
 
@@ -196,8 +195,6 @@ const DataGird = (props) => {
             objjd = modal.confirm(config);
         }
         else {
-            console.log("onSelectRowItem", urlAdd, isShowModalBtnAdd)
-
             navigate(urlAdd)
         }
     }
@@ -207,13 +204,15 @@ const DataGird = (props) => {
     }
 
     const confirm = (index) => {
-        Modal.confirm({
-            title: 'Confirm',
+        modal.confirm({
+            title: 'Cảnh báo',
             icon: <ExclamationCircleOutlined />,
-            content: 'Bla bla ...',
-            okText: '确认',
-            cancelText: '取消',
-            onOk : handleSelectRowsDelete(index)
+            content: 'Bạn có chắc muốn xóa?',
+            okText: 'Đồng ý', 
+            cancelText: 'Hủy bỏ',
+            onOk: () => {
+                handleSelectRowsDelete(index)
+            }
         });
     };
 
@@ -230,7 +229,7 @@ const DataGird = (props) => {
                         <PlusOutlined />Thêm
                     </Button>}
 
-                    {!!onSelectRowItem && <Button
+                    {!isDisableRowSelect && !!onSelectRowItem && <Button
                         onClick={() => confirm(1)}
                         size='middle'
                         danger
@@ -246,7 +245,7 @@ const DataGird = (props) => {
             }
             <Col>
                 <Table
-                    rowSelection={rowSelection}
+                    rowSelection={!isDisableRowSelect? rowSelection : false}
                     locale={locale}
                     dataSource={dataTable}
                     columns={columns}
@@ -266,7 +265,7 @@ const DataGird = (props) => {
                     scroll={!!scroll ? scroll : {
                         x: 1000
                     }}
-                />;
+                />
             </Col>
             {contextHolder}
         </>
