@@ -6,6 +6,7 @@ import { convertFileToBase64 } from "../../Utils/convertFileToBase64";
 import { Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ExcelExport from "../ExcelExport";
+import ImportExcel from "../ExcelImport";
 const DashBoard = (props) => {
     const PagePath = [{ href: "/", title: 'Trang chủ' }];
     const [modal, contextHolder] = Modal.useModal();
@@ -46,6 +47,33 @@ const DashBoard = (props) => {
         data: [['Country', 'Population'], ['USA', 331000000], ['India', 1380004385]],
     };
 
+    const schema = {
+        "Mã nhân viên": {
+            prop: 'UserName',
+            type: Number,
+            // required: true
+        },
+        "Tên nhân viên": {
+            prop: 'FullName',
+            type: String
+        }
+    };
+
+    const checkFile = (data) => {
+        let errors = [];
+        data.map((item, index) => {
+            if (item.UserName < 0) {
+                errors.push({
+                    error: 'Mã số nhân viên không được phép âm!',
+                    row: index + 2,
+                    column: 'Mã nhân viên'
+                });
+            }
+        });
+
+        return errors
+    }
+
     return (
         <div>
             <input type="file" onChange={handleImageChange} multiple />
@@ -54,6 +82,17 @@ const DashBoard = (props) => {
 
             <Button onClick={confirm}>Confirm</Button>
             <ExcelExport sheets={[sheet1, sheet2]} />
+            <ImportExcel
+                schema={schema}
+                // check={checkFile}
+                rules={[
+                    {
+                        key: 'UserName',
+                        value: ['<0', '>=100'],
+                        column : 'Mã nhân viên'
+                    }
+                ]}
+            />
             {contextHolder}
         </div>
     );
