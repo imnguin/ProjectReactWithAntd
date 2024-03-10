@@ -33,7 +33,7 @@ export const _fetchAPI = async (url = '', data = {}, _header = headerDefautl, me
     } catch (error) {
         return {
             iserror: true,
-            message: error.message,
+            message: "Lỗi hệ thống, vui lòng liên hệ quản trị viên!",
             messagedetail: error.stack,
             resultObject: null
         }

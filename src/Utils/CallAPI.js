@@ -49,7 +49,7 @@ const _fetchData = (hostName, apiPath, data, method = 'POST') => async (dispatch
     } catch (error) {
         return {
             iserror: true,
-            message: error.messaege,
+            message: error.message,
             messagedetail: error,
             resultObject: null
         }
