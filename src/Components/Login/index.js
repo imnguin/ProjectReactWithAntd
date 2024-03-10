@@ -23,8 +23,7 @@ const Login = () => {
         }
         else {
             setisShowbtnLogin(false);
-            // Notification(response.message, response.messagedetail, 'error');
-            message.error(response.messagedetail);
+            message.error(response.message);
             return;
         }
     };
