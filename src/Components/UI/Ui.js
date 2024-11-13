@@ -1,5 +1,5 @@
 import React from 'react';
-import config from '../../Routers/Config'
+import config from '../../routers/Config'
 import Layout from './Layout';
 import { Routes, Route, Navigate } from 'react-router-dom';
 

@@ -63,7 +63,7 @@ const Header = (props) => {
                             float : 'right',
                             marginRight : 10
                         }}>
-                            <Avatar size='default' icon={<UserOutlined />}></Avatar>  {!isMobile ? `${user.username} - ${user.fullname}` : ''}
+                            <Avatar size='default' icon={<UserOutlined />}></Avatar>  {!isMobile ? `${user?.username} - ${user?.fullname}` : ''}
                         </div>
                     </Dropdown>
                 </Col>

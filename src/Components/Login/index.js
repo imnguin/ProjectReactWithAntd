@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { HOSTNAME } from '../../Utils/Constants/SystemVars';
-import { _fetchLogin } from '../../Utils/CallAPI';
-import { Notification } from '../../Utils/Notification';
+import { HOSTNAME } from '../../utils/Constants/SystemVars';
+import { _fetchLogin } from '../../utils/CallAPI';
+import { Notification } from '../../utils/Notification';
 
 const Login = () => {
     let navigate = useNavigate();
@@ -37,7 +37,8 @@ const Login = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: 500
+                height: '100vh',
+                justifyItems : 'center'
             }}
         >
             <Form

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setBreadcrumb } from "../../../../Components/Redux/Reducers";
+import { setBreadcrumb } from "../../../../components/Redux/Reducers";
 import { AddElementList, AddPagePath } from "../Constants";
-import FormContainer from "../../../../Components/FormContainer";
-import { _fetchData } from "../../../../Utils/CallAPI";
-import { HOSTNAME } from "../../../../Utils/Constants/SystemVars";
-import { Notification } from "../../../../Utils/Notification";
+import FormContainer from "../../../../components/FormContainer";
+import { _fetchData } from "../../../../utils/CallAPI";
+import { HOSTNAME } from "../../../../utils/Constants/SystemVars";
+import { Notification } from "../../../../utils/Notification";
 import { useNavigate } from "react-router-dom";
 
 const Add = (props) => {

@@ -1,7 +1,7 @@
-import DashBoard from "../Components/UI/DashBoard";
-import PageNotFound from "../Components/UI/PageNotFound";
-import { routes as dec } from "../Views/Declarations";
-import { routes as major } from "../Views/Major"
+import DashBoard from "../components/UI/DashBoard";
+import PageNotFound from "../components/UI/PageNotFound";
+import { routes as dec } from "../views/Declarations";
+import { routes as major } from "../views/Major"
 
 const configRoute = [
     {

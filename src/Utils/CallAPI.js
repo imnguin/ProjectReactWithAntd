@@ -1,4 +1,4 @@
-import { hideLoading, setDataUser, showLoading } from '../Components/Redux/Reducers';
+import { hideLoading, setDataUser, showLoading } from '../components/Redux/Reducers';
 import { HOST_LIST } from "./Constants/SystemVars";
 import { _fetchAPI } from "./FuncRequest";
 import AsyncStorage from '@react-native-async-storage/async-storage';

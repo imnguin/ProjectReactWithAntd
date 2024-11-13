@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBreadcrumb } from '../../../../Components/Redux/Reducers';
+import { setBreadcrumb } from '../../../../components/Redux/Reducers';
 import { PagePath, SearchElement, columns } from '../Constants';
-import DataGird from '../../../../Components/DataGird';
-import { _fetchData } from '../../../../Utils/CallAPI';
-import { HOSTNAME } from '../../../../Utils/Constants/SystemVars';
-import { Notification } from '../../../../Utils/Notification';
-import SearchForm from '../../../../Components/SearchForm';
+import DataGird from '../../../../components/DataGird';
+import { _fetchData } from '../../../../utils/CallAPI';
+import { HOSTNAME } from '../../../../utils/Constants/SystemVars';
+import { Notification } from '../../../../utils/Notification';
+import SearchForm from '../../../../components/SearchForm';
 
 const Search = (props) => {
 const dispatch = useDispatch();

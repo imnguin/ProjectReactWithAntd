@@ -6,7 +6,7 @@ import { Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 
 import Lottie from 'react-lottie';
-import animationData from '../../Asset/Images/Loading/loading.json'
+import animationData from '../../asset/images/Loading/loading.json'
 
 const defaultOptions = {
     loop: true,

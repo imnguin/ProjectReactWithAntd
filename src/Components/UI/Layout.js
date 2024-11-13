@@ -3,7 +3,7 @@ import { Layout as LayoutAntd, Spin, theme } from 'antd';
 import Menu from './Menu'
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
-import { ContentStyle } from '../../Asset/css/ContentStyle';
+import { ContentStyle } from '../../asset/css/ContentStyle';
 const { Content, Footer } = LayoutAntd;
 
 const Layout = (props) => {

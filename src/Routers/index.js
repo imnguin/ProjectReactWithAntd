@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Login from '../Components/Login';
-import UI from '../Components/UI/Ui';
+import Login from '../components/Login';
+import UI from '../components/UI/Ui';
 import Authen from './CheckAuthen';
 
 const Router = (props) => {
@@ -9,7 +9,7 @@ const Router = (props) => {
         <>
             <Routes>
                 <Route path='/login' element={<Login/>}></Route>
-                <Route path='*' element={<Authen><UI/></Authen>}></Route>
+                {/* <Route path='*' element={<Authen><UI/></Authen>}></Route> */}
                 <Route path='*' element={<UI/>}></Route>
             </Routes>
         </>

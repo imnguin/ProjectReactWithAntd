@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import AppMenu from "../../Views";
+import AppMenu from "../../views";
 import { Layout, Menu as MenuAntd } from "antd";
 const { Sider } = Layout;
 const Menu = (props) => {

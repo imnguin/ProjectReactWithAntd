@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setBreadcrumb } from '../Redux/Reducers';
-import { convertFileToBase64 } from "../../Utils/convertFileToBase64";
+import { convertFileToBase64 } from "../../utils/convertFileToBase64";
 import { Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ExcelExport from "../ExcelExport";
@@ -78,8 +78,8 @@ const DashBoard = (props) => {
         <div>
             <input type="file" onChange={handleImageChange} multiple />
             {!!selectedImages && <img src={selectedImages[0].base64} alt="Preview" style={{ maxWidth: '100%' }} />}
-            <button onClick={handleUpload}>Upload Ảnh</button>
-
+            {/* <button style={} onClick={handleUpload}>Upload Ảnh</button> */}
+            <Button onClick={handleUpload}>Upload Ảnh</Button>
             <Button onClick={confirm}>Confirm</Button>
             <ExcelExport sheets={[sheet1, sheet2]} />
             <ImportExcel
@@ -89,7 +89,7 @@ const DashBoard = (props) => {
                     {
                         key: 'UserName',
                         value: ['<0', '>=100'],
-                        column : 'Mã nhân viên'
+                        column: 'Mã nhân viên'
                     }
                 ]}
             />

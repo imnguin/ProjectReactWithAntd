@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer'; // Thêm thư viện simple-peer
 import { useParams } from 'react-router-dom';
-import '../../../../Asset/css/ChatForm.css';
+import '../../../../asset/css/ChatForm.css';
 
 const Chat = (props) => {
     const [messages, setMessages] = useState([]);
