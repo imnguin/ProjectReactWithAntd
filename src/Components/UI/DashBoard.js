@@ -7,6 +7,7 @@ import { Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ExcelExport from "../ExcelExport";
 import ImportExcel from "../ExcelImport";
+import ModalForm from "../Form/ModalForm";
 const DashBoard = (props) => {
     const PagePath = [{ href: "/", title: 'Trang chủ' }];
     const [modal, contextHolder] = Modal.useModal();
@@ -74,11 +75,19 @@ const DashBoard = (props) => {
         return errors
     }
 
+    const listColumn = [{
+        type: 'input',
+        name: 'ProductID',
+        label: 'Mã sản phẩm',
+        rules: []
+    }]
+    const [visible, setVisible] = useState(false);
+
     return (
         <div>
-            <input type="file" onChange={handleImageChange} multiple />
+            {/* <input type="file" onChange={handleImageChange} multiple />
             {!!selectedImages && <img src={selectedImages[0].base64} alt="Preview" style={{ maxWidth: '100%' }} />}
-            {/* <button style={} onClick={handleUpload}>Upload Ảnh</button> */}
+            <button style={} onClick={handleUpload}>Upload Ảnh</button>
             <Button onClick={handleUpload}>Upload Ảnh</Button>
             <Button onClick={confirm}>Confirm</Button>
             <ExcelExport sheets={[sheet1, sheet2]} />
@@ -93,7 +102,9 @@ const DashBoard = (props) => {
                     }
                 ]}
             />
-            {contextHolder}
+            {contextHolder} */}
+            <Button onClick={() => setVisible(true)}>Open</Button>
+            <ModalForm listColumn={listColumn} visible={visible}/>
         </div>
     );
 }
