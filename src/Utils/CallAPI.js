@@ -9,17 +9,15 @@ const _fetchLogin = (hostName, apiPath, data) => async (dispatch, state) => {
         const apiResult = await _fetchAPI(`${HOST_LIST[hostName].hostBaseURL}${apiPath}`, data);
         dispatch(hideLoading());
 
-        if(!apiResult.iserror)
-        {
-            AsyncStorage.setItem('logininfo', JSON.stringify(apiResult.resultObject));
-            dispatch(setDataUser(apiResult.resultObject));
+        if (!apiResult.iserror) {
+            await AsyncStorage.setItem('logininfo', JSON.stringify(apiResult.resultObject));
+            dispatch(setDataUser(JSON.stringify(apiResult.resultObject)));
             return {
                 ...apiResult,
-                messaege : 'Đăng nhập thành công!',
+                messaege: 'Đăng nhập thành công!',
             }
         }
-        else
-        {
+        else {
             return apiResult;
         }
     } catch (error) {
@@ -35,17 +33,20 @@ const _fetchLogin = (hostName, apiPath, data) => async (dispatch, state) => {
 const _fetchData = (hostName, apiPath, data, method = 'POST') => async (dispatch, state) => {
     try {
         const logininfo = JSON.parse(localStorage.getItem('logininfo'));
+        console.log('logininfo', logininfo)
         const _header = {
             'user-agent': 'Mozilla/4.0 MDN Example',
             'Access-Control-Allow-Origin': '*',
-            "token": `Bearer ${logininfo.accessToken}`,
-            'Content-Type' : 'application/json'
+            "authorization": `Bearer ${logininfo.accessToken}`,
+            'Content-Type': 'application/json'
         };
-    dispatch(showLoading());
-    const apiResult = await _fetchAPI(`${HOST_LIST[hostName].hostBaseURL}${apiPath}`, data, _header);
-    dispatch(hideLoading());
+
+        console.log('_header', _header)
+        dispatch(showLoading());
+        const apiResult = await _fetchAPI(`${HOST_LIST[hostName].hostBaseURL}${apiPath}`, data, _header);
+        dispatch(hideLoading());
         return apiResult
-        
+
     } catch (error) {
         return {
             iserror: true,

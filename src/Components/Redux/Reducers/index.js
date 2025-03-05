@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import breadcrumbReducer from './BreadcrumbReducer'
-import userReducer from './UserReducer'
 import loaddingReducer from './LoaddingReducer'
+import userReducer from './UserReducer'
 export * from './BreadcrumbReducer'
-export * from './UserReducer'
 export * from './LoaddingReducer'
+export * from './UserReducer'
 
 export const rootReducer = combineReducers({
   breadcrumb: breadcrumbReducer,
-  user: userReducer,
   loadding: loaddingReducer,
+  user: userReducer
 })

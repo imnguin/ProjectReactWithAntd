@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  background-color: white;
+  transition: background-color 0.3s;
+}
+.resizer:hover {
+  background-color: darkgray;
+}

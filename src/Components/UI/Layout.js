@@ -9,7 +9,7 @@ const { Content, Footer } = LayoutAntd;
 const Layout = (props) => {
     const [collapsed, setCollapsed] = useState(false);
     const {token: { colorBgContainer },} = theme.useToken();
-    if (props.layout === 'pagenotfound') {
+    if (props.layout === 'notUse') {
         return (
             props.children
         );

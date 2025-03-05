@@ -9,7 +9,7 @@ const Router = (props) => {
         <>
             <Routes>
                 <Route path='/login' element={<Login/>}></Route>
-                {/* <Route path='*' element={<Authen><UI/></Authen>}></Route> */}
+                <Route path='*' element={<Authen><UI/></Authen>}></Route>
                 <Route path='*' element={<UI/>}></Route>
             </Routes>
         </>
